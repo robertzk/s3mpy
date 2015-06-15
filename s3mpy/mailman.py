@@ -1,27 +1,26 @@
 from pickle import dump, load
-from os import tempnam, remove
+import os
 from boto.s3.bucket     import Bucket
 from boto.s3.connection import S3Connection
 from boto.s3.key        import Key
 
-class Mailman:
+class Mailman(object):
 
-    def __init__(self, conn, bucket):
+    def __init__(self, bucket, conn = None):
         """
         Create an S3MPY mailman, responsible for storing an reading Python
         objects from S3 keys.
         """
 
-        if type(conn) != S3Connection:
-            raise TypeError("Please specify an S3Connection.")
-
         if type(bucket) == str:
+            if type(conn) != S3Connection:
+                raise TypeError("Please specify an S3Connection.")
+
             bucket = Bucket(conn, bucket)
 
         if type(bucket) != Bucket:
             raise TypeError("Please specify a Bucket object.")
 
-        self._conn   = conn
         self._bucket = bucket
 
     def store(self, obj, key):
@@ -37,13 +36,13 @@ class Mailman:
         if type(key) != Key:
             raise TypeError("Please specify a valid Key.")
 
-        tempfile     = tempnam()
+        tempfile     = os.tempnam()
         file_pointer = open(tempfile, "wb")
         dump(obj, file_pointer)
         file_pointer.close()
 
         length = key.set_contents_from_filename(tempfile)
-        remove(tempfile)
+        os.remove(tempfile)
 
         return length
 
@@ -60,14 +59,39 @@ class Mailman:
         if type(key) != Key:
             raise TypeError("Please specify a valid Key.")
 
-        tempfile = tempnam()
+        tempfile = os.tempnam()
         key.get_contents_to_filename(tempfile)
 
         file_pointer = open(tempfile, "r")
         object = load(file_pointer)
         file_pointer.close()
 
-        remove(tempfile)
+        os.remove(tempfile)
 
         return object
+
+
+    @staticmethod
+    def s3read(s3key, bucket = Bucket(S3Connection(os.environ.get("AWS_ACCESS_KEY"), os.environ.get("AWS_SECRET_ACCESS_KEY")), os.environ.get("S3_BUCKET"))):
+        """
+        Read a Python object from a given S3 key. Note that the bucket will by
+        default by selected as the S3_BUCKET environment variable from
+        the account with access key and secret access key environment
+        variables AWS_ACCESS_KEY and AWS_SECRET_ACCESS_KEY, respectively.
+
+        Only use this function if those variables are set.
+        """
+        return Mailman(bucket).read(s3key)
+
+    @staticmethod
+    def s3store(obj, s3key, bucket = Bucket(S3Connection(os.environ.get("AWS_ACCESS_KEY"), os.environ.get("AWS_SECRET_ACCESS_KEY")), os.environ.get("S3_BUCKET"))):
+        """
+        Store a Python object to a given S3 key. Note that the bucket will by
+        default by selected as the S3_BUCKET environment variable from
+        the account with access key and secret access key environment
+        variables AWS_ACCESS_KEY and AWS_SECRET_ACCESS_KEY, respectively.
+
+        Only use this function if those variables are set.
+        """
+        return Mailman(bucket).store(obj, s3key)
 
