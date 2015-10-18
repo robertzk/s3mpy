@@ -6,7 +6,7 @@ from boto.s3.key        import Key
 
 class Mailman(object):
 
-    def __init__(self, bucket, conn = None):
+    def __init__(self, conn = S3Connection(os.environ.get("AWS_ACCESS_KEY"), os.environ.get("AWS_SECRET_ACCESS_KEY")), bucket = os.environ.get("S3_BUCKET")):
         """
         Create an S3MPY mailman, responsible for storing an reading Python
         objects from S3 keys.
