@@ -12,17 +12,11 @@ to the name of the bucket you would like to use for the interface.
 Assuming you have installed the module in this repo, you can then execute
 
 ```python
-from s3mpy.mailman import Mailman
-s3read = Mailman.s3read
-s3store = Mailman.s3store
+from s3mpy import mailman
+m = mailman.Mailman()
+m.store("test_value", "test_key")
+m.read("test_key")
+> 'test_value'
 ```
 
-and enjoy dead-simple storing and loading of Python objects:
-
-```
->>> s3store({'a': 1, 'b': 2}, 'foo/bar')
-30
->>> s3read('foo/bar')
-{'a': 1, 'b': 2}
-```
-
+and enjoy dead-simple storing and loading of Python objects!
