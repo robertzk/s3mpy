@@ -9,6 +9,9 @@ with others), set your `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY`
 environment variables to their appropriate values, and set `S3_BUCKET`
 to the name of the bucket you would like to use for the interface.
 
+
+## Installation
+
 Assuming you have installed the module in this repo, you can then execute
 
 ```python
@@ -19,4 +22,12 @@ m.read("test_key")
 > 'test_value'
 ```
 
-and enjoy dead-simple storing and loading of Python objects!
+You'll also have to set the following in your `~/.bash_profile` and make sure it's sourced:
+
+```
+export AWS_ACCESS_KEY=YOURACCCESSKEY
+export AWS_SECRET_ACCESS_KEY=YOURSECRETKEY
+export S3_BUCKET=bucketname
+```
+
+Enjoy dead-simple storing and loading of Python objects!
