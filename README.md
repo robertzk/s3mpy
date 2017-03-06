@@ -5,7 +5,7 @@ variety of reasons. Storing them on Amazon's S3 is even better, since they
 become universally accessible.
 
 To store Python objects to S3 from your REPL (and easily share your objects
-with others), set your `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` 
+with others), set your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` 
 environment variables to their appropriate values, and set `S3_BUCKET`
 to the name of the bucket you would like to use for the interface.
 
@@ -25,7 +25,7 @@ m.read("test_key")
 You'll also have to set the following in your `~/.bash_profile` and make sure it's sourced:
 
 ```
-export AWS_ACCESS_KEY=YOURACCCESSKEY
+export AWS_ACCESS_KEY_ID=YOURACCCESSKEY
 export AWS_SECRET_ACCESS_KEY=YOURSECRETKEY
 export S3_BUCKET=bucketname
 ```

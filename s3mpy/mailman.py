@@ -6,7 +6,7 @@ from boto.s3.key        import Key
 
 class Mailman(object):
 
-    def __init__(self, conn = S3Connection(os.environ.get("AWS_ACCESS_KEY"), os.environ.get("AWS_SECRET_ACCESS_KEY")), bucket = os.environ.get("S3_BUCKET")):
+    def __init__(self, conn = S3Connection(os.environ.get("AWS_ACCESS_KEY_ID"), os.environ.get("AWS_SECRET_ACCESS_KEY")), bucket = os.environ.get("S3_BUCKET")):
         """
         Create an S3MPY mailman, responsible for storing an reading Python
         objects from S3 keys.
@@ -72,24 +72,24 @@ class Mailman(object):
 
 
     @staticmethod
-    def s3read(s3key, bucket = Bucket(S3Connection(os.environ.get("AWS_ACCESS_KEY"), os.environ.get("AWS_SECRET_ACCESS_KEY")), os.environ.get("S3_BUCKET"))):
+    def s3read(s3key, bucket = Bucket(S3Connection(os.environ.get("AWS_ACCESS_KEY_ID"), os.environ.get("AWS_SECRET_ACCESS_KEY")), os.environ.get("S3_BUCKET"))):
         """
         Read a Python object from a given S3 key. Note that the bucket will by
         default by selected as the S3_BUCKET environment variable from
         the account with access key and secret access key environment
-        variables AWS_ACCESS_KEY and AWS_SECRET_ACCESS_KEY, respectively.
+        variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY, respectively.
 
         Only use this function if those variables are set.
         """
         return Mailman(bucket).read(s3key)
 
     @staticmethod
-    def s3store(obj, s3key, bucket = Bucket(S3Connection(os.environ.get("AWS_ACCESS_KEY"), os.environ.get("AWS_SECRET_ACCESS_KEY")), os.environ.get("S3_BUCKET"))):
+    def s3store(obj, s3key, bucket = Bucket(S3Connection(os.environ.get("AWS_ACCESS_KEY_ID"), os.environ.get("AWS_SECRET_ACCESS_KEY")), os.environ.get("S3_BUCKET"))):
         """
         Store a Python object to a given S3 key. Note that the bucket will by
         default by selected as the S3_BUCKET environment variable from
         the account with access key and secret access key environment
-        variables AWS_ACCESS_KEY and AWS_SECRET_ACCESS_KEY, respectively.
+        variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY, respectively.
 
         Only use this function if those variables are set.
         """
